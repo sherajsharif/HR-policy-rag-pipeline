@@ -5,7 +5,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from embeddings import get_embeddings
-
+import streamlit as st
 VECTOR_STORE_PATH = "vectorstore"
 
 def build_vector_store(chunks):
@@ -39,11 +39,11 @@ def format_docs(docs):
 def get_rag_chain(vector_store):
     """Creates a conversational RAG chain with memory using LCEL."""
 
-llm = ChatGroq(
-    groq_api_key=st.secrets["GROQ_API_KEY"],
-    model_name="llama-3.1-8b-instant",
-    temperature=0.1
-)
+    llm = ChatGroq(
+        groq_api_key=st.secrets["GROQ_API_KEY"],
+        model_name="llama-3.1-8b-instant",
+        temperature=0.1
+    )
     
     # 1. Contextualize Question Prompt
     # This rephrases the user's follow-up question into a standalone question
