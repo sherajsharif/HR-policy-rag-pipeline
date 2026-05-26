@@ -38,7 +38,12 @@ def format_docs(docs):
 
 def get_rag_chain(vector_store):
     """Creates a conversational RAG chain with memory using LCEL."""
-    llm = ChatGroq(model_name="llama-3.1-8b-instant", temperature=0.1)
+
+llm = ChatGroq(
+    groq_api_key=st.secrets["GROQ_API_KEY"],
+    model_name="llama-3.1-8b-instant",
+    temperature=0.1
+)
     
     # 1. Contextualize Question Prompt
     # This rephrases the user's follow-up question into a standalone question
