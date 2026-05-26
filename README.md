@@ -17,7 +17,7 @@ https://hr-policy-query-resolution-system-using-rag-pipeline.streamlit.app/
 
 ## Main Interface
 
-![HR Policy RAG Assistant](./assets/hr_rag_ui.png)
+![HR Policy RAG Assistant](./assets/assetshr_rag_ui.png)
 
 ---
 
