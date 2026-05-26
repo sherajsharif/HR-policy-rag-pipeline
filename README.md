@@ -1,68 +1,271 @@
-# 🏢 Celebal HR Policy RAG Assistant
+# 🏢 HR Policy Query Resolution System using RAG Pipeline
 
-A production-grade Retrieval-Augmented Generation (RAG) system built to provide intelligent, context-aware answers to HR policy queries using open-source tools and high-performance APIs.
+An enterprise-grade AI-powered HR assistant built using **Retrieval-Augmented Generation (RAG)** architecture to provide accurate, context-aware, and conversational responses from HR policy documents.
 
----
-
-## 🛠️ Technical Stack
-*   **LLM**: Groq (Llama-3.1-8b-instant) - Chosen for sub-second response times and high reasoning quality.
-*   **Embeddings**: Hugging Face Inference API (`all-MiniLM-L6-v2`) - Cloud-based to ensure 100% compatibility across Windows/Linux without local dependency issues.
-*   **Vector Database**: FAISS (Facebook AI Similarity Search) - A high-performance local vector database for efficient semantic search.
-*   **Orchestration**: LangChain (LCEL) - Used for building modular, conversational chains with memory.
-*   **Frontend**: Streamlit - A premium, interactive web interface for the chatbot.
+The application combines **Groq LLMs**, **LangChain**, **FAISS Vector Search**, and **HuggingFace Embeddings** to create a scalable and production-ready conversational AI solution.
 
 ---
 
-## 📁 File Architecture & Purpose
+# 🌐 Live Demo
 
-### 1. `app.py` (The Interface)
-*   **Purpose**: The main entry point for the user. It manages the web UI, chat history, and the interaction between the user and the RAG pipeline.
-*   **Key Features**: Sidebar suggested questions, session-state memory, and markdown-based chat styling.
-
-### 2. `ingest.py` (The Knowledge Builder)
-*   **Purpose**: A standalone script used to process PDFs and build the vector database.
-*   **Workflow**: Reads PDFs from `Data/` -> Splits text -> Generates Embeddings -> Saves FAISS index to `vectorstore/`.
-*   **Note**: Run this whenever you add or update your PDF documents.
-
-### 3. `rag_pipeline.py` (The Brain)
-*   **Purpose**: Contains the core logic for the RAG system.
-*   **Key Features**:
-    *   **MMR Retrieval**: Ensures a diverse set of document chunks are found to avoid repetitive context.
-    *   **Contextualizer**: Re-phrases follow-up questions (e.g., "What about *this*?") into standalone queries.
-    *   **Table Intelligence**: Hardcoded logic to help the AI correctly interpret HR grade tables (M01-M11).
-
-### 4. `utils.py` (The Data Processor)
-*   **Purpose**: Utility functions for document loading and text splitting.
-*   **Key Features**: Automatically attaches metadata (Policy Name) to every text chunk so the AI knows which document it is reading.
-
-### 5. `embeddings.py` (The Connector)
-*   **Purpose**: Configures the connection to the Hugging Face API.
-*   **Benefit**: By moving embeddings to the cloud, it bypasses the `WinError 126` (DLL missing) common on Windows machines running PyTorch.
-
-### 6. `.env` (The Safe)
-*   **Purpose**: Stores sensitive API keys (`GROQ_API_KEY`, `HUGGINGFACEHUB_API_TOKEN`) securely.
+🚀 **Deployed Application:**  
+https://hr-policy-query-resolution-system-using-rag-pipeline.streamlit.app/
 
 ---
 
-## 🔄 The System Workflow
+# 📸 Application Preview
 
-### Phase A: Data Ingestion (One-time or on update)
-1.  **PDF Loading**: `utils.py` reads PDFs and converts them into text.
-2.  **Metadata Tagging**: Each chunk is tagged with its source file name.
-3.  **Embedding Generation**: Text is sent to Hugging Face Cloud to be converted into 384-dimensional vectors.
-4.  **Vector Storage**: The vectors and text are saved locally in the `vectorstore/` folder.
+## Main Interface
 
-### Phase B: Conversational Query (User interaction)
-1.  **Input**: User asks a question in `app.py`.
-2.  **Contextualization**: The AI looks at previous chat history and the new question to create a "Standalone Question."
-3.  **MMR Retrieval**: The system searches the FAISS index for the 10 most relevant and diverse chunks of policy text.
-4.  **Generation**: The text chunks + standalone question are sent to **Groq**. 
-5.  **Output**: The AI provides a detailed answer based *only* on the retrieved context.
+![HR Policy RAG Assistant](./assets/hr_rag_ui.png)
 
 ---
 
-## 🚀 How to Run
-1.  **Activate Environment**: `venv\Scripts\activate`
-2.  **Install Deps**: `pip install -r requirements.txt`
-3.  **Index Data**: `python ingest.py`
-4.  **Launch App**: `streamlit run app.py`
+# 🚀 Key Features
+
+- ✅ Conversational HR Policy Assistant
+- ✅ Retrieval-Augmented Generation (RAG)
+- ✅ Context-Aware Question Answering
+- ✅ Multi-turn Conversation Memory
+- ✅ Semantic Search using FAISS
+- ✅ Groq Llama 3.1 Integration
+- ✅ MMR-based Intelligent Retrieval
+- ✅ Multi-PDF Support
+- ✅ Streamlit Interactive UI
+- ✅ Modular & Scalable Architecture
+- ✅ Production-Ready Deployment
+
+---
+
+# 🧠 System Architecture
+
+```text
+User Query
+    ↓
+Question Contextualization
+    ↓
+Semantic Vector Retrieval
+    ↓
+MMR-Based Relevant Chunk Selection
+    ↓
+Groq LLM Generation
+    ↓
+Context-Aware HR Response
+```
+
+---
+
+# ⚙️ Technology Stack
+
+| Category | Technology |
+|---|---|
+| LLM | Groq - Llama 3.1 8B Instant |
+| Embeddings | HuggingFace Endpoint Embeddings |
+| Vector Database | FAISS |
+| Framework | LangChain (LCEL) |
+| Frontend | Streamlit |
+| Programming Language | Python |
+| Document Loader | PyPDFLoader |
+| Text Splitter | RecursiveCharacterTextSplitter |
+
+---
+
+# 📂 Project Structure
+
+```bash
+HR-policy-rag-pipeline/
+│
+├── app.py
+├── ingest.py
+├── rag_pipeline.py
+├── embeddings.py
+├── utils.py
+├── requirements.txt
+├── README.md
+│
+├── Data/
+│   └── HR policy PDFs
+│
+├── vectorstore/
+│   ├── index.faiss
+│   └── index.pkl
+│
+└── assets/
+    └── hr_rag_ui.png
+```
+
+---
+
+# 🔄 Workflow
+
+## Phase 1 — Data Ingestion
+
+1. Load HR policy PDF documents
+2. Extract and preprocess text
+3. Split text into optimized chunks
+4. Generate semantic embeddings
+5. Store vectors in FAISS database
+
+---
+
+## Phase 2 — Conversational Query Pipeline
+
+1. User submits HR-related question
+2. Chat history is analyzed
+3. Question contextualization occurs
+4. Relevant chunks are retrieved
+5. Groq LLM generates grounded response
+6. Response displayed in Streamlit UI
+
+---
+
+# 🧩 Module Overview
+
+## `app.py`
+Handles:
+- Streamlit frontend UI
+- Chat interaction
+- Session state management
+- Suggested queries
+- Chat history rendering
+
+---
+
+## `ingest.py`
+Responsible for:
+- PDF ingestion
+- Document preprocessing
+- Text chunking
+- FAISS vector database creation
+
+---
+
+## `rag_pipeline.py`
+Contains:
+- Conversational RAG chain
+- Prompt engineering
+- Contextual question reformulation
+- MMR retrieval logic
+- LLM orchestration
+
+---
+
+## `embeddings.py`
+Manages:
+- HuggingFace embedding generation
+- Secure API token handling
+- Cloud embedding inference
+
+---
+
+## `utils.py`
+Provides:
+- PDF loading utilities
+- Metadata attachment
+- Recursive text splitting
+
+---
+
+# 💬 Example Queries
+
+- What is the annual leave policy?
+- What is the resignation notice period?
+- What are the office timings?
+- What is the travel reimbursement policy?
+- What is the medical reimbursement limit?
+- What is the travel per diem for Sweden?
+
+---
+
+# 🚀 Local Setup
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/sherajsharif/HR-policy-rag-pipeline.git
+cd HR-policy-rag-pipeline
+```
+
+---
+
+## 2️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 3️⃣ Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+HUGGINGFACEHUB_API_TOKEN=your_huggingface_token
+```
+
+---
+
+## 4️⃣ Build Vector Database
+
+```bash
+python ingest.py
+```
+
+---
+
+## 5️⃣ Launch Streamlit App
+
+```bash
+streamlit run app.py
+```
+
+---
+
+# 🌐 Deployment
+
+The application is deployed using Streamlit Cloud.
+
+🔗 Live Application:  
+https://hr-policy-query-resolution-system-using-rag-pipeline.streamlit.app/
+
+---
+
+# 🔐 Security Practices
+
+- API keys securely managed using Streamlit Secrets
+- `.env` excluded using `.gitignore`
+- No hardcoded credentials in source code
+- Context-grounded response generation reduces hallucinations
+
+---
+
+# 📈 Future Enhancements
+
+- Hybrid Search (BM25 + Dense Retrieval)
+- PDF Upload Support
+- Source Citation Responses
+- Docker Deployment
+- AWS/GCP/Azure Hosting
+- Authentication System
+- Real-time Streaming Responses
+- Conversation Export Feature
+
+---
+
+# 👨‍💻 Author
+
+## Sheraj Sharif
+
+### Connect With Me
+
+- GitHub: https://github.com/sherajsharif
+- LinkedIn: https://www.linkedin.com/in/sheraj-sharif-652723250/
+- Portfolio: https://sherajsharif.github.io/
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
